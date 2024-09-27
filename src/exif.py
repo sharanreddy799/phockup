@@ -14,10 +14,10 @@ class Exif(object):
         try:
             exif_command = self.get_exif_command(self.filename)
             if threading.current_thread() is threading.main_thread():
-                data = check_output(exif_command, shell=True).decode('UTF-8')
+                data = check_output(exif_command, shell=False).decode('UTF-8')
             else:
                 # Swallow stderr in the case that multiple threads are executing
-                data = check_output(exif_command, shell=True, stderr=subprocess.DEVNULL).decode('UTF-8')
+                data = check_output(exif_command, shell=False, stderr=subprocess.DEVNULL).decode('UTF-8')
             exif = json.loads(data)[0]
         except (CalledProcessError, UnicodeDecodeError):
             return None
